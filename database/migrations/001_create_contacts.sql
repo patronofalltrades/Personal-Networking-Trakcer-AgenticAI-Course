@@ -43,7 +43,6 @@ create index if not exists contacts_user_updated_idx
 
 alter table public.contacts enable row level security;
 
-revoke all on table public.contacts from anon;
 grant select, insert, update, delete on table public.contacts to authenticated;
 
 drop policy if exists contacts_select_own on public.contacts;

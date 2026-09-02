@@ -118,7 +118,7 @@ An index on `(user_id, updated_at desc)` supports the default per-user list orde
 
 ## Authentication and row-level security
 
-RLS is enabled on `public.contacts`, anonymous access is revoked, and the authenticated role receives only table-level CRUD grants. Four separate policies enforce ownership:
+RLS is enabled on `public.contacts`, the authenticated role receives table-level CRUD grants, and no unauthenticated policy exists. Four separate policies enforce ownership:
 
 - `SELECT`: `auth.user_id() = user_id`
 - `INSERT`: `WITH CHECK (auth.user_id() = user_id)`
