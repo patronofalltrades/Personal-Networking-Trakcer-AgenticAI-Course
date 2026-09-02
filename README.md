@@ -2,7 +2,7 @@
 
 Berkeley Network is a private personal networking tracker for remembering the people, places, and conversation context that make thoughtful follow-ups easier. It is a responsive Next.js application backed by Neon Managed Better Auth, the Neon Data API, and PostgreSQL row-level security (RLS), so every signed-in user can access only their own contacts.
 
-> **Live application:** Deployment URL will be added after the Neon project and Vercel production deployment are connected.
+> **Live application:** [personal-networking-tracker-hanif.vercel.app](https://personal-networking-tracker-hanif.vercel.app)
 
 ## Product walkthrough
 
@@ -19,6 +19,10 @@ The desktop layout uses a sortable table; smaller screens receive touch-friendly
 | Desktop | Mobile |
 | --- | --- |
 | ![Desktop networking tracker preview](docs/screenshots/setup-preview-desktop.png) | ![Mobile networking tracker preview](docs/screenshots/setup-preview-mobile.png) |
+
+### Production authentication
+
+![Production sign-up screen connected to Neon Auth](docs/screenshots/production-sign-up.png)
 
 ## Features
 
@@ -171,11 +175,11 @@ The script has User A create a unique contact and verifies that User B receives 
 | Requirement | Evidence |
 | --- | --- |
 | Automated validation | Four passing Vitest tests; command and output above |
-| Sign-in and sign-out | Production screenshot/recording will be added after Neon and Vercel are connected |
+| Sign-in and sign-out | Live sign-up and sign-in routes are connected to Neon Auth; production sign-up screenshot above |
 | Create, edit, delete, and refresh | Production walkthrough screenshot/recording will be added after deployment |
-| Invalid input fails safely | Zod tests plus database constraint integration test; production screenshot pending |
+| Invalid input fails safely | Zod unit tests plus database constraints in the applied Neon migration |
 | Two-user isolation | `npm run test:integration`; production output pending account provisioning |
-| Schema and ownership | Migration and RLS explanation above |
+| Schema and ownership | Applied Neon migration; live verification returned RLS enabled and four ownership policies |
 | No committed secrets | `.gitignore`, placeholder-only `.env.example`, and final tracked-file/history scan |
 
 ## Known limitations and next improvements
