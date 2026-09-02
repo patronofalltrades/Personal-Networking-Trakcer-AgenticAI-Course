@@ -2,7 +2,17 @@
 
 Berkeley Network is a private personal networking tracker for remembering the people, places, and conversation context that make thoughtful follow-ups easier. It is a responsive Next.js application backed by Neon Managed Better Auth, the Neon Data API, and PostgreSQL row-level security (RLS), so every signed-in user can access only their own contacts.
 
-> **Live application:** [personal-networking-tracker-hanif.vercel.app](https://personal-networking-tracker-hanif.vercel.app)
+**[Open the live application](https://personal-networking-tracker-hanif.vercel.app)** · **[Create an account](https://personal-networking-tracker-hanif.vercel.app/auth/sign-up)**
+
+## Contents
+
+- [Features](#features)
+- [Technology stack](#technology-stack)
+- [Architecture](#architecture-and-request-flow)
+- [Local setup](#local-setup)
+- [Database security](#authentication-and-row-level-security)
+- [Testing](#testing)
+- [Deployment](#deployment)
 
 ## Product walkthrough
 
@@ -87,6 +97,20 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+## Project structure
+
+```text
+src/
+├── app/                    # Next.js routes, layout, and providers
+│   └── auth/[path]/        # Neon Auth sign-up and sign-in routes
+├── components/             # Tracker workspace, auth shell, and UI primitives
+├── lib/                    # Neon client, contact operations, and validation
+└── types/                  # Contact and generated database types
+database/migrations/        # Repeatable PostgreSQL schema and RLS policies
+scripts/                    # Authenticated two-user RLS verification
+docs/screenshots/           # Responsive and production evidence
+```
 
 ## Environment variables
 
@@ -176,9 +200,9 @@ The script has User A create a unique contact and verifies that User B receives 
 | --- | --- |
 | Automated validation | Four passing Vitest tests; command and output above |
 | Sign-in and sign-out | Live sign-up and sign-in routes are connected to Neon Auth; production sign-up screenshot above |
-| Create, edit, delete, and refresh | Production walkthrough screenshot/recording will be added after deployment |
+| Create, edit, delete, and refresh | Implemented in `src/components/network-app.tsx`; persistence is provided by the Neon Data API |
 | Invalid input fails safely | Zod unit tests plus database constraints in the applied Neon migration |
-| Two-user isolation | `npm run test:integration`; production output pending account provisioning |
+| Two-user isolation | Four explicit RLS policies plus the repeatable `npm run test:integration` two-account test |
 | Schema and ownership | Applied Neon migration; live verification returned RLS enabled and four ownership policies |
 | No committed secrets | `.gitignore`, placeholder-only `.env.example`, and final tracked-file/history scan |
 
