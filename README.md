@@ -188,8 +188,8 @@ The unit tests check valid input, blank names, invalid priority values, and opti
 Current unit output:
 
 ```text
-Test Files  1 passed (1)
-Tests       4 passed (4)
+Test Files  2 passed (2)
+Tests       8 passed (8)
 ```
 
 ### Two-account security test
@@ -219,7 +219,7 @@ The test makes User A create a contact. It checks that User B cannot read, updat
 
 | Requirement | Evidence |
 | --- | --- |
-| Automated validation | Four passing Vitest tests; command and output above |
+| Automated validation | Eight passing Vitest tests; command and output above |
 | Sign-in and sign-out | Live sign-up and sign-in routes are connected to Neon Auth; production sign-up screenshot above |
 | Create, edit, delete, and refresh | Implemented in `src/components/network-app.tsx`; persistence is provided by the Neon Data API |
 | Invalid input fails safely | Zod unit tests plus database constraints in the applied Neon migration |
@@ -232,6 +232,12 @@ The test makes User A create a contact. It checks that User B cannot read, updat
 - Google and Microsoft SSO require provider credentials in Neon Auth.
 - Search and sort run in the browser after the user's contacts load.
 - The application does not include reminders, calendar links, import, export, sharing, teams, or AI features.
+
+## Improvements next
+
+- Add server-side pagination for users with large contact lists.
+- Add password recovery after its email delivery is configured.
+- Add contact import and export with explicit user approval.
 
 ## Writing note
 
