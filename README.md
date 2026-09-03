@@ -135,12 +135,12 @@ Real values belong in `.env.local`, which is ignored by Git. `.env.example` cont
 ### Configure SSO buttons
 
 1. Configure the provider in Neon Auth.
-2. Use custom production credentials for that provider.
+2. Use custom production credentials for that provider. Do not use Neon shared OAuth keys in production.
 3. Add the provider name to `NEXT_PUBLIC_AUTH_SOCIAL_PROVIDERS`.
 4. Use `google`, `microsoft`, or `google,microsoft`.
 5. Restart or redeploy the application.
 
-The application does not show an SSO button when its provider is not in this variable. This prevents a user from selecting an incomplete provider.
+The application does not show an SSO button when its provider is not in this variable. Leave this variable empty until the Neon provider uses custom credentials. This prevents a user from selecting an incomplete or shared-key provider.
 
 ## Database schema
 
