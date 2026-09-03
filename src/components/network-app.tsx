@@ -214,7 +214,7 @@ function SetupPreview() {
 }
 
 function Brand() {
-  return <div className="flex items-center gap-3"><div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm"><Sparkles className="size-4" /></div><div><p className="font-heading text-sm font-semibold tracking-tight">Berkeley Network</p><p className="text-xs text-muted-foreground">Stay meaningfully connected</p></div></div>;
+  return <div className="flex items-center gap-3"><div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm"><Sparkles className="size-4" /></div><div><p className="font-heading text-sm font-semibold tracking-tight">Berkonnect</p><p className="text-xs text-muted-foreground">Stay meaningfully connected</p></div></div>;
 }
 
 function ContactsWorkspace({ user }: { user: { name: string; email: string } }) {

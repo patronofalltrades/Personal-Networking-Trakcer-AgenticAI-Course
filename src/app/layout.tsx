@@ -8,17 +8,17 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
-  title: "Berkeley Network — Personal Networking Tracker",
+  title: "Berkonnect — Personal Networking Tracker",
   description:
     "A private, secure place to remember the people and context that matter.",
   openGraph: {
-    title: "Berkeley Network",
+    title: "Berkonnect",
     description: "Your network, thoughtfully kept.",
     images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Berkeley Network",
+    title: "Berkonnect",
     description: "Your network, thoughtfully kept.",
     images: ["/og.png"],
   },

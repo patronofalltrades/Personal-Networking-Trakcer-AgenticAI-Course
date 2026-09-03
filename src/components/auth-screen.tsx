@@ -18,7 +18,7 @@ export function AuthScreen({ path }: { path: string }) {
             <Sparkles className="size-5" aria-hidden="true" />
           </div>
           <div>
-            <p className="font-heading font-semibold">Berkeley Network</p>
+            <p className="font-heading font-semibold">Berkonnect</p>
             <p className="text-xs text-primary-foreground/65">Stay meaningfully connected</p>
           </div>
         </div>

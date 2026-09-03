@@ -1,6 +1,6 @@
-# Berkeley Network
+# Berkonnect
 
-Berkeley Network is a personal networking tracker. Use it to save contact details and notes. Each signed-in user can see only their own contacts. The application uses Next.js, Neon Managed Better Auth, the Neon Data API, and PostgreSQL row-level security (RLS).
+Berkonnect is a personal networking tracker. Use it to save contact details and notes. Each signed-in user can see only their own contacts. The application uses Next.js, Neon Managed Better Auth, the Neon Data API, and PostgreSQL row-level security (RLS).
 
 **[Open the live application](https://personal-networking-tracker-hanif.vercel.app)** · **[Create an account](https://personal-networking-tracker-hanif.vercel.app/auth/sign-up)**
 
