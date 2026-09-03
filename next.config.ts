@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
-const neonEndpoints = [
+const neonOrigins = [
   process.env.NEXT_PUBLIC_NEON_AUTH_URL,
   process.env.NEXT_PUBLIC_NEON_DATA_API_URL,
-].filter((value): value is string => Boolean(value));
+]
+  .filter((value): value is string => Boolean(value))
+  .map((value) => new URL(value).origin);
 
 const nextConfig: NextConfig = {
   async headers() {
@@ -22,7 +24,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' data:",
               "style-src 'self' 'unsafe-inline'",
               "script-src 'self' 'unsafe-inline'",
-              `connect-src 'self' ${neonEndpoints.join(" ")}`,
+              `connect-src 'self' ${neonOrigins.join(" ")}`,
               "form-action 'self'",
             ].join("; "),
           },
