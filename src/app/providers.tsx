@@ -7,7 +7,12 @@ import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
 import { Toaster } from "@/components/ui/sonner";
+import { parseAuthSocialProviders } from "@/lib/auth-providers";
 import { neon } from "@/lib/neon";
+
+const socialProviders = parseAuthSocialProviders(
+  process.env.NEXT_PUBLIC_AUTH_SOCIAL_PROVIDERS,
+);
 
 export function Providers({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -43,6 +48,9 @@ export function Providers({ children }: { children: ReactNode }) {
       Link={Link}
       credentials={{ forgotPassword: false }}
       signUp={{ fields: ["name"] }}
+      social={
+        socialProviders.length ? { providers: socialProviders } : undefined
+      }
     >
       {content}
     </NeonAuthUIProvider>

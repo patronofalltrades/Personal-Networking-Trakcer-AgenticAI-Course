@@ -37,7 +37,8 @@ The desktop view uses a table. The mobile view uses contact cards. Both views pr
 
 ## Features
 
-- Create an account, sign in, restore a session, and sign out with Neon Managed Better Auth
+- Use email and password authentication through Neon Managed Better Auth
+- Show Google or Microsoft SSO only after you configure each provider
 - Store private contacts for each user
 - Create, view, edit, and delete contacts
 - Search the name, company, role, meeting place, and notes fields
@@ -124,11 +125,22 @@ docs/screenshots/           # Responsive and production evidence
 | `NEXT_PUBLIC_NEON_AUTH_URL` | Public | Neon Managed Better Auth HTTPS endpoint |
 | `NEXT_PUBLIC_NEON_DATA_API_URL` | Public | Neon Data API `/rest/v1` HTTPS endpoint |
 | `NEXT_PUBLIC_APP_URL` | Public | Canonical application URL for social metadata |
+| `NEXT_PUBLIC_AUTH_SOCIAL_PROVIDERS` | Public | Comma-separated SSO providers configured in Neon Auth |
 | `DATABASE_URL` | Local administration only | Optional trusted connection for schema tools; never expose or add to Vercel |
 | `TEST_USER_A_EMAIL` / `TEST_USER_A_PASSWORD` | Local test only | First dedicated RLS test account |
 | `TEST_USER_B_EMAIL` / `TEST_USER_B_PASSWORD` | Local test only | Second dedicated RLS test account |
 
 Real values belong in `.env.local`, which is ignored by Git. `.env.example` contains placeholders only.
+
+### Configure SSO buttons
+
+1. Configure the provider in Neon Auth.
+2. Use custom production credentials for that provider.
+3. Add the provider name to `NEXT_PUBLIC_AUTH_SOCIAL_PROVIDERS`.
+4. Use `google`, `microsoft`, or `google,microsoft`.
+5. Restart or redeploy the application.
+
+The application does not show an SSO button when its provider is not in this variable. This prevents a user from selecting an incomplete provider.
 
 ## Database schema
 
@@ -197,10 +209,11 @@ The test makes User A create a contact. It checks that User B cannot read, updat
 1. Push the repository to GitHub.
 2. Import the repository into Vercel as a Next.js project.
 3. Add `NEXT_PUBLIC_NEON_AUTH_URL`, `NEXT_PUBLIC_NEON_DATA_API_URL`, and `NEXT_PUBLIC_APP_URL` in Vercel for Preview and Production.
-4. Do not add `DATABASE_URL` or test-account credentials to Vercel.
-5. Deploy the application.
-6. Add the production Vercel URL to Neon Auth trusted domains.
-7. Test sign-up, sign-in, contact actions, refresh, search, filters, sorting, invalid input, and sign-out.
+4. Add `NEXT_PUBLIC_AUTH_SOCIAL_PROVIDERS` after you configure the listed providers in Neon Auth.
+5. Do not add `DATABASE_URL` or test-account credentials to Vercel.
+6. Deploy the application.
+7. Add the production Vercel URL to Neon Auth trusted domains.
+8. Test sign-up, sign-in, SSO, contact actions, refresh, search, filters, sorting, invalid input, and sign-out.
 
 ## Grading evidence
 
@@ -216,7 +229,7 @@ The test makes User A create a contact. It checks that User B cannot read, updat
 
 ## Current limits
 
-- The application supports email and password sign-in only.
+- Google and Microsoft SSO require provider credentials in Neon Auth.
 - Search and sort run in the browser after the user's contacts load.
 - The application does not include reminders, calendar links, import, export, sharing, teams, or AI features.
 
