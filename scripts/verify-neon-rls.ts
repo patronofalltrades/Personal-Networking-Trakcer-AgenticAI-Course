@@ -1,6 +1,7 @@
-import "dotenv/config";
-
+import { config } from "dotenv";
 import { createClient } from "@neondatabase/neon-js";
+
+config({ path: ".env.local", quiet: true });
 
 const requiredVariables = [
   "NEXT_PUBLIC_NEON_AUTH_URL",
@@ -17,20 +18,49 @@ for (const variable of requiredVariables) {
   }
 }
 
-function client() {
-  return createClient({
-    auth: { url: process.env.NEXT_PUBLIC_NEON_AUTH_URL! },
-    dataApi: { url: process.env.NEXT_PUBLIC_NEON_DATA_API_URL! },
-  });
-}
+const authUrl = process.env.NEXT_PUBLIC_NEON_AUTH_URL!;
+const dataApiUrl = process.env.NEXT_PUBLIC_NEON_DATA_API_URL!;
+const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const appOrigin = new URL(appUrl).origin;
 
-async function signIn(
-  neon: ReturnType<typeof client>,
-  email: string,
-  password: string,
-) {
-  const result = await neon.auth.signIn.email({ email, password });
-  if (result.error) throw new Error(`Could not sign in ${email}: ${result.error.message}`);
+async function authenticatedClient(email: string, password: string) {
+  const signIn = await fetch(`${authUrl}/sign-in/email`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: appOrigin,
+    },
+    body: JSON.stringify({ email, password, callbackURL: appUrl }),
+  });
+
+  if (!signIn.ok) {
+    const body = await signIn.json().catch(() => ({}));
+    throw new Error(`Could not sign in test account: ${body.message ?? signIn.statusText}`);
+  }
+
+  const sessionCookie = signIn.headers
+    .getSetCookie()
+    .map((value) => value.split(";", 1)[0])
+    .find((value) => value.includes("session_token="));
+  if (!sessionCookie) throw new Error("Auth did not return a session cookie.");
+
+  const session = await fetch(`${authUrl}/get-session`, {
+    headers: { Cookie: sessionCookie, Origin: appOrigin },
+  });
+  const jwt = session.headers.get("set-auth-jwt");
+  if (!session.ok || !jwt) throw new Error("Auth did not return a Data API JWT.");
+
+  return {
+    neon: createClient({
+      dataApi: { url: dataApiUrl, getToken: async () => jwt },
+    }),
+    async signOut() {
+      await fetch(`${authUrl}/sign-out`, {
+        method: "POST",
+        headers: { Cookie: sessionCookie, Origin: appOrigin },
+      });
+    },
+  };
 }
 
 function assert(condition: unknown, message: string): asserts condition {
@@ -38,13 +68,14 @@ function assert(condition: unknown, message: string): asserts condition {
 }
 
 async function main() {
-  const userA = client();
-  const userB = client();
+  const [sessionA, sessionB] = await Promise.all([
+    authenticatedClient(process.env.TEST_USER_A_EMAIL!, process.env.TEST_USER_A_PASSWORD!),
+    authenticatedClient(process.env.TEST_USER_B_EMAIL!, process.env.TEST_USER_B_PASSWORD!),
+  ]);
+  const userA = sessionA.neon;
+  const userB = sessionB.neon;
   const marker = `rls-check-${Date.now()}`;
   let contactId: string | undefined;
-
-  await signIn(userA, process.env.TEST_USER_A_EMAIL!, process.env.TEST_USER_A_PASSWORD!);
-  await signIn(userB, process.env.TEST_USER_B_EMAIL!, process.env.TEST_USER_B_PASSWORD!);
 
   try {
     const created = await userA
@@ -95,7 +126,7 @@ async function main() {
       const cleanup = await userA.from("contacts").delete().eq("id", contactId);
       if (cleanup.error) console.warn(`Fixture cleanup failed: ${cleanup.error.message}`);
     }
-    await Promise.all([userA.auth.signOut(), userB.auth.signOut()]);
+    await Promise.all([sessionA.signOut(), sessionB.signOut()]);
   }
 }
 

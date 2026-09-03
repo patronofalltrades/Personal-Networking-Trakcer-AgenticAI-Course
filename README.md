@@ -33,7 +33,29 @@ The desktop view uses a table. The mobile view uses contact cards. Both views pr
 
 ### Production authentication
 
-![Production sign-up screen connected to Neon Auth](docs/screenshots/production-sign-up.png)
+| Signed in | Signed out |
+| --- | --- |
+| ![Production workspace after sign-in](docs/screenshots/production-signed-in.png) | ![Production landing page after sign-out](docs/screenshots/production-signed-out.png) |
+
+The first image shows the private workspace after authentication. The second image shows the public page and the `Signed out` confirmation.
+
+### Production contact actions
+
+| Create | Edit and refresh |
+| --- | --- |
+| ![A contact created in production](docs/screenshots/production-contact-created.png) | ![The edited contact after a page refresh](docs/screenshots/production-contact-edited-after-refresh.png) |
+
+| Invalid input | Delete |
+| --- | --- |
+| ![The production form rejects a blank required name](docs/screenshots/production-invalid-input.png) | ![The production workspace is empty after the test contact is deleted](docs/screenshots/production-signed-in.png) |
+
+The create image shows `Evidence Contact`. The refresh image shows the saved name `Evidence Contact — Edited`. The invalid-input image shows `Name is required`. The final image shows zero contacts after deletion.
+
+### Production account-isolation test
+
+![Sanitized output from the production two-account RLS test](docs/screenshots/production-two-account-rls.svg)
+
+The live test used two dedicated QA accounts. User A created one temporary contact. User B could not read, update, or delete it. The test then confirmed that User A's contact did not change. The test removed the temporary contact. See the [sanitized text output](docs/evidence/two-account-rls-output.txt).
 
 ## Features
 
@@ -220,10 +242,10 @@ The test makes User A create a contact. It checks that User B cannot read, updat
 | Requirement | Evidence |
 | --- | --- |
 | Automated validation | Eight passing Vitest tests; command and output above |
-| Sign-in and sign-out | Live sign-up and sign-in routes are connected to Neon Auth; production sign-up screenshot above |
-| Create, edit, delete, and refresh | Implemented in `src/components/network-app.tsx`; persistence is provided by the Neon Data API |
-| Invalid input fails safely | Zod unit tests plus database constraints in the applied Neon migration |
-| Two-user isolation | Four explicit RLS policies plus the repeatable `npm run test:integration` two-account test |
+| Sign-in and sign-out | Production signed-in and signed-out images above |
+| Create, edit, delete, and refresh | Production images show the created contact, the saved edit after refresh, and the empty state after deletion |
+| Invalid input fails safely | Production image shows the required-name error; Zod tests and PostgreSQL constraints provide two more checks |
+| Two-user isolation | Sanitized production test output above; four RLS policies; repeatable `npm run test:integration` test |
 | Schema and ownership | Applied Neon migration; live verification returned RLS enabled and four ownership policies |
 | No committed secrets | `.gitignore`, placeholder-only `.env.example`, and final tracked-file/history scan |
 

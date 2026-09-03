@@ -1,0 +1,12 @@
+Berkonnect production RLS verification
+Run date: 2026-09-03
+
+PASS: Created two dedicated QA accounts.
+PASS: User B could not read User A's contact.
+PASS: User B could not update User A's contact.
+PASS: User B could not delete User A's contact.
+PASS: User A's contact remained unchanged.
+PASS: PostgreSQL rejected a blank name and invalid priority.
+PASS: Removed the temporary contact fixture.
+
+The output contains no email address, password, session cookie, JWT, or database secret.
