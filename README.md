@@ -2,10 +2,15 @@
 
 Berkonnect is a personal networking tracker. Use it to save contact details and notes. Each signed-in user can see only their own contacts. The application uses Next.js, Neon Managed Better Auth, the Neon Data API, and PostgreSQL row-level security (RLS).
 
-**[Open the live application](https://personal-networking-tracker-hanif.vercel.app)** · **[Create an account](https://personal-networking-tracker-hanif.vercel.app/auth/sign-up)**
+## Live application
+
+**Berkonnect on Vercel:** [https://personal-networking-tracker-hanif.vercel.app](https://personal-networking-tracker-hanif.vercel.app)
+
+[Create a Berkonnect account](https://personal-networking-tracker-hanif.vercel.app/auth/sign-up)
 
 ## Contents
 
+- [Live application](#live-application)
 - [Features](#features)
 - [Technology stack](#technology-stack)
 - [Architecture](#architecture-and-request-flow)
